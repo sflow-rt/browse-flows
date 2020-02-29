@@ -115,6 +115,9 @@ $(function() {
         display: (a) => a.split(/,\s*/).pop()
       }
     )
+    .bind('typeahead:autocomplete', function(evt,suggestion) {
+      $(this).typeahead('val', suggestion);
+    })
     .bind('typeahead:select', function(evt,suggestion) {
       $(this).typeahead('val', suggestion);
     });
@@ -144,6 +147,9 @@ $(function() {
         display: (a) => a.split(/[&|(]/).pop()
       }
     )
+    .bind('typeahead:autocomplete', function(evt,suggestion) {
+      $(this).typeahead('val',suggestion + '=');
+    })
     .bind('typeahead:select', function(evt,suggestion) {
       $(this).typeahead('val',suggestion + '=');
     });

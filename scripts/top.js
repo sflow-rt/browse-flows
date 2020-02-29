@@ -1,18 +1,18 @@
 // author: InMon Corp.
 // version: 1.0
-// date: 2/27/2020
-// description: Flow Trend
+// date: 2/29/2020
+// description: Browse Flows
 // copyright: Copyright (c) 2020 InMon Corp. ALL RIGHTS RESERVED
 
 include(scriptdir()+'/inc/trend.js');
 
 var SEP = '_SEP_';
 
-var aggMode  = getSystemProperty('flow-browser.aggMode')  || 'max';
-var maxFlows = getSystemProperty('flow-browser.maxFlows') || 10;
-var minValue = getSystemProperty('flow-browser.minValue') || 0.01;
-var agents   = getSystemProperty('flow-browser.agents')   || 'ALL';
-var t        = getSystemProperty('flow-browser.t')        || 2;
+var aggMode  = getSystemProperty('browse-flows.aggMode')  || 'max';
+var maxFlows = getSystemProperty('browse-flows.maxFlows') || 10;
+var minValue = getSystemProperty('browse-flows.minValue') || 0.01;
+var agents   = getSystemProperty('browse-flows.agents')   || 'ALL';
+var t        = getSystemProperty('browse-flows.t')        || 2;
 
 var userFlows = {};
 
@@ -36,7 +36,7 @@ function flowSpec(keys,value,filter) {
   var entry = userFlows[key];
   if(!entry) {
     // try to create flow
-    var name = 'flow_browser_' + specID;
+    var name = 'browse_flows' + specID;
     try {
       setFlow(name,{keys:keysStr, value:valueStr, filter: filterStr.length > 0 ? filterStr : null, t:t, n:maxFlows, fs:SEP});
       entry = {name:name, trend: new Trend(300,1)};

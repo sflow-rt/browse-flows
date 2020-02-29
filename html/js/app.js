@@ -61,13 +61,21 @@ $(function() {
      window.open(window.location);
   });
 
-  function keySuggestions(q, sync, async) {
-    var toks = q.split(/,\s*/);
-    var last = toks.pop();
+  function split(str,pat) {
+    var re = new RegExp(pat,'g');
+    var end = 0;
+    while(re.test(str)) { end = re.lastIndex; }
+    return [ str.substring(0,end), str.substring(end) ];
+  }
 
-    $.getJSON(keysURL, { search: last }, function(suggestedToken) {
+  var sep_keys = ',';
+  function keySuggestions(q, sync, async) {
+    var parts = split(q,sep_keys);
+    var prefix = parts[0];
+    var suffix = parts[1];
+
+    $.getJSON(keysURL, { search: suffix }, function(suggestedToken) {
       var suggestions = [];
-      var prefix = toks.length == 0 ? '' : toks.join(',') + ',';
       for (var i = 0; i < suggestedToken.length; i++) {
         suggestions.push(prefix + suggestedToken[i]); 
       }
@@ -85,14 +93,12 @@ $(function() {
     }
   }
 
+  var sep_filter = '[&|(]';
   function filterSuggestions(q, sync, async) {
-    var re = /[&|(]/g;
-    var end = 0;
-    while(re.test(q)) { end = re.lastIndex; }
-    var prefix = q.substring(0,end);
-    var last = q.substring(end);
-    
-    $.getJSON(keysURL, { search: last }, function(suggestedToken) {
+    var parts = split(q,sep_filter);
+    var prefix = parts[0];
+    var suffix = parts[1]; 
+    $.getJSON(keysURL, { search: suffix }, function(suggestedToken) {
       var suggestions = [];
       for (var i = 0; i < suggestedToken.length; i++) {
         suggestions.push(prefix + suggestedToken[i]);
@@ -112,9 +118,12 @@ $(function() {
         name: 'keys',
         source: keySuggestions,
         limit: 200,
-        display: (a) => a.split(/,\s*/).pop()
+        display: (a) => split(a,sep_keys)[1]
       }
     )
+    .bind('typeahead:cursorchange', function(evt,suggestion) {
+      $(this).typeahead('val',$(this).typeahead('val'));
+    })
     .bind('typeahead:autocomplete', function(evt,suggestion) {
       $(this).typeahead('val', suggestion);
     })
@@ -124,15 +133,15 @@ $(function() {
   $('#value')
     .val(top_value)
     .typeahead(
-    {
-      highlight: true,
-      minLength: 0
-    },
-    {
-      name: 'value',
-      source: valueSuggestions
-    }
-  );
+      {
+        highlight: true,
+        minLength: 0
+      },
+      {
+        name: 'value',
+        source: valueSuggestions
+      }
+    );
   $('#filter')
     .val(top_filter)
     .typeahead(
@@ -144,9 +153,12 @@ $(function() {
         name: 'filter',
         source: filterSuggestions,
         limit: 200,
-        display: (a) => a.split(/[&|(]/).pop()
+        display: (a) => split(a,sep_filter)[1]
       }
     )
+    .bind('typeahead:cursorchange', function(evt,suggestion) {
+      $(this).typeahead('val',$(this).typeahead('val'));
+    })
     .bind('typeahead:autocomplete', function(evt,suggestion) {
       $(this).typeahead('val',suggestion + '=');
     })

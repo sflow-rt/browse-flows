@@ -123,12 +123,15 @@ $(function() {
     )
     .bind('typeahead:cursorchange', function(evt,suggestion) {
       $(this).typeahead('val',$(this).typeahead('val'));
+      this.scrollLeft = this.scrollWidth;
     })
     .bind('typeahead:autocomplete', function(evt,suggestion) {
       $(this).typeahead('val', suggestion);
+      this.scrollLeft = this.scrollWidth;
     })
     .bind('typeahead:select', function(evt,suggestion) {
       $(this).typeahead('val', suggestion);
+      this.scrollLeft = this.scrollWidth;
     });
   $('#value')
     .val(top_value)
@@ -158,12 +161,15 @@ $(function() {
     )
     .bind('typeahead:cursorchange', function(evt,suggestion) {
       $(this).typeahead('val',$(this).typeahead('val'));
+      this.scrollLeft = this.scrollWidth;
     })
     .bind('typeahead:autocomplete', function(evt,suggestion) {
       $(this).typeahead('val',suggestion + '=');
+      this.scrollLeft = this.scrollWidth;
     })
     .bind('typeahead:select', function(evt,suggestion) {
       $(this).typeahead('val',suggestion + '=');
+      this.scrollLeft = this.scrollWidth;
     });
 
   function valueToKey(val) {

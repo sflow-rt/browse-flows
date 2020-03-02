@@ -121,6 +121,11 @@ $(function() {
         display: (a) => split(a,sep_keys)[1]
       }
     )
+    .bind('typeahead:active', function() {
+      this.scrollLeft = this.scrollWidth;
+      var input = this;
+      setTimeout(function() { input.setSelectionRange(1000,1000); }, 1);
+    })
     .bind('typeahead:cursorchange', function(evt,suggestion) {
       $(this).typeahead('val',$(this).typeahead('val'));
       this.scrollLeft = this.scrollWidth;
@@ -159,6 +164,11 @@ $(function() {
         display: (a) => split(a,sep_filter)[1]
       }
     )
+    .bind('typeahead:active', function() {
+      this.scrollLeft = this.scrollWidth;
+      var input = this;
+      setTimeout(function() { input.setSelectionRange(1000,1000); }, 1);
+    })
     .bind('typeahead:cursorchange', function(evt,suggestion) {
       $(this).typeahead('val',$(this).typeahead('val'));
       this.scrollLeft = this.scrollWidth;

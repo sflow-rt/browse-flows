@@ -75,6 +75,7 @@ $(function() {
     var suffix = parts[1];
 
     $.getJSON(keysURL, { search: suffix }, function(suggestedToken) {
+      if(suggestedToken.length === 1 && suggestedToken[0] === suffix) return;
       var suggestions = [];
       for (var i = 0; i < suggestedToken.length; i++) {
         suggestions.push(prefix + suggestedToken[i]); 
@@ -99,6 +100,7 @@ $(function() {
     var prefix = parts[0];
     var suffix = parts[1]; 
     $.getJSON(keysURL, { search: suffix }, function(suggestedToken) {
+      if(suggestedToken.length === 1 && suggestedToken[0] === suffix) return;
       var suggestions = [];
       for (var i = 0; i < suggestedToken.length; i++) {
         suggestions.push(prefix + suggestedToken[i]);

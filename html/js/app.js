@@ -88,7 +88,8 @@ $(function() {
   function valueSuggestions(q,sync) {
     if(q) {
       var matcher = new RegExp('^' + q);
-      sync(values.filter((el) => matcher.test(el)));
+      var suggestions = values.filter((el) => matcher.test(el));
+      if(suggestions.length === 1 && suggestions[0] === q) return;
     } else {
       sync(values);
     }

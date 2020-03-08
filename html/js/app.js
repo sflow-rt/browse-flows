@@ -90,6 +90,7 @@ $(function() {
       var matcher = new RegExp('^' + q);
       var suggestions = values.filter((el) => matcher.test(el));
       if(suggestions.length === 1 && suggestions[0] === q) return;
+      sync(suggestions);
     } else {
       sync(values);
     }

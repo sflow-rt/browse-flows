@@ -1,5 +1,8 @@
 # Browse real-time top network flows
 
+Real-time trending of network packet flows.
+
+[Getting Started](https://sflow-rt.com/intro.php)
 
 ## To install
 

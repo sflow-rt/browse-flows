@@ -1,8 +1,8 @@
 // author: InMon Corp.
-// version: 1.0
-// date: 2/29/2020
+// version: 1.1
+// date: 1/12/2022
 // description: Browse Flows
-// copyright: Copyright (c) 2020 InMon Corp. ALL RIGHTS RESERVED
+// copyright: Copyright (c) 2020-2022 InMon Corp. ALL RIGHTS RESERVED
 
 include(scriptdir()+'/inc/trend.js');
 
@@ -15,12 +15,6 @@ var agents   = getSystemProperty('browse-flows.agents')   || 'ALL';
 var t        = getSystemProperty('browse-flows.t')        || 2;
 
 var userFlows = {};
-
-function escapeRegExp(str) {
-  // seems like a bug - Rhino doesn't convert Java strings into native JavaScript strings
-  str = new String(str);
-  return str ? str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&') : null;
-}
 
 var specID = 0;
 function flowSpec(keys,value,filter) {
@@ -83,7 +77,7 @@ setHttpHandler(function(req) {
       result = [];
       search = req.query['search'];
       if(search) {
-        matcher = new RegExp('^' + escapeRegExp(search), 'i');
+        matcher = new RegExp('^' + search[0].replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&'), 'i');
         result = Object.keys(flowKeys()).filter((k) => matcher.test(k));
       } else {
         result = Object.keys(flowKeys());

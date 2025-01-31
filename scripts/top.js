@@ -1,17 +1,17 @@
 // author: InMon Corp.
-// version: 1.1
-// date: 1/12/2022
+// version: 1.2
+// date: 1/30/2025
 // description: Browse Flows
-// copyright: Copyright (c) 2020-2022 InMon Corp. ALL RIGHTS RESERVED
+// copyright: Copyright (c) 2020-2025 InMon Corp. ALL RIGHTS RESERVED
 
 include(scriptdir()+'/inc/trend.js');
 
 var SEP = '_SEP_';
 
-var aggMode  = getSystemProperty('browse-flows.aggMode')  || 'max';
+var aggMode  = (getSystemProperty('browse-flows.aggMode') || 'max').toLowerCase();
 var maxFlows = getSystemProperty('browse-flows.maxFlows') || 10;
 var minValue = getSystemProperty('browse-flows.minValue') || 0.01;
-var agents   = getSystemProperty('browse-flows.agents')   || 'ALL';
+var agents   = (getSystemProperty('browse-flows.agents')  || 'ALL').toUpperCase();
 var t        = getSystemProperty('browse-flows.t')        || 2;
 
 var userFlows = {};
@@ -31,8 +31,19 @@ function flowSpec(keys,value,filter) {
   if(!entry) {
     // try to create flow
     var name = 'browse_flows' + specID;
+    var spec = {
+      keys:keysStr,
+      value:valueStr,
+      filter: filterStr.length > 0 ? filterStr : null,
+      t:t,
+      n:maxFlows,
+      fs:SEP
+    };
+    if(!('core' === aggMode || 'edge' === aggMode || 'CORE' === agents || 'EDGE' === agents)) {
+      spec.aggMode = 'AGENT';
+    }
     try {
-      setFlow(name,{keys:keysStr, value:valueStr, filter: filterStr.length > 0 ? filterStr : null, t:t, n:maxFlows, fs:SEP});
+      setFlow(name,spec);
       entry = {name:name, trend: new Trend(300,1)};
       entry.trend.addPoints(Date.now(), {topn:{}});
       userFlows[key] = entry;

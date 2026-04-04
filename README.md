@@ -10,5 +10,5 @@ Real-time trending of network packet flows.
 2. Run command: `sflow-rt/get-app.sh sflow-rt browse-flows`
 3. Restart sFlow-RT
 
-For more information, visit:
+For documentation, tutorials, and community support, visit:
 https://sFlow-RT.com
